@@ -1,10 +1,14 @@
 import {rotate, dist, normalize} from './math';
 
+function roundFloat(f, d = 3) {
+  return parseFloat(f.toFixed(d));
+}
+
 function generateAttractor() {
   return {
-    x: -1 + Math.random() * 2,
-    y: -1 + Math.random() * 2,
-    s: -1 + Math.random() * 2,
+    x: roundFloat(-1 + Math.random() * 2),
+    y: roundFloat(-1 + Math.random() * 2),
+    s: roundFloat(-1 + Math.random() * 2),
   };
 }
 
@@ -22,16 +26,27 @@ function applyAttractor(point, attractor) {
 
 export default class CurveGenerator {
   constructor() {
-    this.rotation = 0;
-    this.radiusA = 0;
-    this.radiusB = 0;
+    this.ellipse = {
+      rotation: 0,
+      radiusA: 0,
+      radiusB: 0,
+    };
     this.attractors = [];
   }
 
+  toState() {
+    return {ellipse: this.ellipse, attractors: this.attractors};
+  }
+
+  fromState(state) {
+    Object.assign(this.ellipse, state.ellipse || {});
+    this.attractors = Array.from(state.attractors || []);
+  }
+
   randomizeEllipse() {
-    this.rotation = Math.random() * Math.PI * 2;
-    this.radiusA = 0.3 + Math.random() * 0.7;
-    this.radiusB = 0.3 + Math.random() * 0.7;
+    this.ellipse.rotation = roundFloat(Math.random() * Math.PI * 2);
+    this.ellipse.radiusA = roundFloat(0.3 + Math.random() * 0.7);
+    this.ellipse.radiusB = roundFloat(0.3 + Math.random() * 0.7);
   }
 
   randomizeAttractors(minN = 0, maxN = 25) {
@@ -43,9 +58,9 @@ export default class CurveGenerator {
   }
 
   compute(t) {
-    const ox = Math.cos(t) * this.radiusA;
-    const oy = Math.sin(t) * this.radiusB;
-    let pt = rotate(ox, oy, this.rotation);
+    const ox = Math.cos(t) * this.ellipse.radiusA;
+    const oy = Math.sin(t) * this.ellipse.radiusB;
+    let pt = rotate(ox, oy, this.ellipse.rotation);
     pt.s = 0;
     for (let i = 0; i < this.attractors.length; i++) {
       pt = applyAttractor(pt, this.attractors[i]);

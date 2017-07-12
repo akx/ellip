@@ -1,16 +1,29 @@
 body {
-	margin: 0;
-	background: #111;
+    margin: 0;
+    background: #111;
+    color: #ddd;
 }
 
 * {
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
+    font-size: 10pt;
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto", "Helvetica Neue", sans-serif;
 }
 
 canvas.ellip-canvas {
-	position: fixed;
-	left: 50%;
-	top: 50%;
-	transform: translate(-50%, -50%);
-	border: 1em solid #000;
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    border: 1em solid #000;
+}
+
+.ellip-ui {
+    position: fixed;
+    left: 50%;
+    bottom: 5px;
+    transform: translate(-50%, 0);
+}
+
+a {
+    color: #eae;
 }

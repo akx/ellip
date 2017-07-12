@@ -25,6 +25,13 @@ export default class EllipApp {
     this.generator.randomizeAttractors(2, 5);
     this.generateGradient();
     this.setUpManipulation(this.canvas);
+    this.options = {
+      mirrorX: false,
+      mirrorY: false,
+      drawAttractors: true,
+      radiusMul: 5,
+      maxRadius: 10,
+    };
   }
 
   setUpManipulation(canvas) {
@@ -33,7 +40,7 @@ export default class EllipApp {
       this.generator.attractors.forEach((at) => {
         if (dist(x, y, at.x, at.y) < 0.05) {
           this.currentAttractor = at;
-          if (event.metaKey) {
+          if (event.metaKey || event.altKey) {
             this.currentAttractor.s *= -1;
             this.clearNext = true;
           }
@@ -75,7 +82,7 @@ export default class EllipApp {
       this.clearNext = false;
     }
 
-    const {gradient} = this;
+    const {gradient, options} = this;
 
     function gradientStyler(ctx, pt) {
       const colorIdx = Math.floor((pt.y + 1) / 2 * gradient.length);
@@ -83,7 +90,18 @@ export default class EllipApp {
       ctx.fillStyle = gradient[colorIdx];
     }
 
-    drawPoints(this.drawCanvas, this.drawCtx, this.generator, gradientStyler, false);
+    function radiusGenerator(pt, i) {
+      return Math.min(options.maxRadius, 2 + Math.abs(pt.s * options.radiusMul));
+    }
+
+    drawPoints(
+      this.drawCanvas, this.drawCtx,
+      this.generator,
+      this.options.mirrorX,
+      this.options.mirrorY,
+      gradientStyler,
+      radiusGenerator,
+    );
   }
 
   drawAttractors() {
@@ -110,6 +128,9 @@ export default class EllipApp {
       0, 0, canvas.width, canvas.height,
       0, 0, this.drawCanvas.width, this.drawCanvas.height
     );
-    this.drawAttractors();
+
+    if (this.options.drawAttractors) {
+      this.drawAttractors();
+    }
   }
 }
