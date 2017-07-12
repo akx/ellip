@@ -1,6 +1,4 @@
-/* eslint-disable no-alert, no-param-reassign */
-import m from 'mithril/hyperscript';
-import mount from 'mithril/mount';
+/* eslint-disable no-alert, no-param-reassign, no-underscore-dangle */
 
 const HELP = `
 You can use the mouse to drag attractors around.
@@ -9,10 +7,21 @@ Alt/Cmd-click them to toggle their polarity.
 MIT license – github.com/akx/ellip
 `;
 
+const el = (tag, attrs = {}, content = []) => {
+  const element = Object.assign(document.createElement(tag), attrs);
+  Array.from(content).forEach((child) => {
+    if (typeof child !== 'object') {
+      child = document.createTextNode(child);
+    }
+    element.appendChild(child);
+  });
+  return element;
+};
+
 
 function labeledCheckbox(label, box) {
-  return m('label', [
-    m('input[type=checkbox]', {
+  return el('label', {}, [
+    el('input', {
       type: 'checkbox',
       checked: box(),
       onchange(e) {
@@ -43,13 +52,8 @@ export default class EllipUi {
     this.attractorsOptionBox = optionBox(this.app, 'drawAttractors');
     this.mirrorXOptionBox = optionBox(this.app, 'mirrorX', true);
     this.mirrorYOptionBox = optionBox(this.app, 'mirrorY', true);
-  }
-
-
-  view() {
-    const {app} = this;
-    return [
-      m('a', {
+    this.elements = [
+      el('a', {
         href: '#',
         onclick() {
           alert(HELP);
@@ -58,25 +62,25 @@ export default class EllipUi {
       labeledCheckbox('attractors', this.attractorsOptionBox),
       labeledCheckbox('mirror x', this.mirrorXOptionBox),
       labeledCheckbox('mirror y', this.mirrorYOptionBox),
-      m('button', {
+      el('button', {
         onclick() {
           app.generator.randomizeEllipse();
           app.clearNext = true;
         },
       }, 'random ellipse'),
-      m('button', {
+      el('button', {
         onclick() {
           app.generator.randomizeAttractors(2, 15);
           app.clearNext = true;
         },
       }, 'random attractors'),
-      m('button', {
+      el('button', {
         onclick() {
           app.generateGradient();
           app.clearNext = true;
         },
       }, 'random gradient'),
-      m('button', {
+      el('button', {
         onclick() {
           const stateJSON = JSON.stringify(app.generator.toState());
           const newStateJSON = prompt('Copy/paste state here', stateJSON);
@@ -95,6 +99,8 @@ export default class EllipUi {
   }
 
   mount(el) {
-    mount(el, this);
+    this.elements.forEach((kid) => {
+      el.appendChild(kid);
+    });
   }
 }
