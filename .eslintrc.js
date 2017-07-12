@@ -20,6 +20,8 @@ module.exports = {
     "max-len": ["error", 120],
     "no-mixed-operators": "off",
     "no-plusplus": "off",
+    "no-nested-ternary": "off",
+    "no-bitwise": "off",
     "object-curly-spacing": "off",
   },
 };
