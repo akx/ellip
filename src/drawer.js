@@ -1,8 +1,8 @@
-const defaultStyler = (ctx, pt, i) => {
+const defaultStyler = (ctx) => {
   ctx.fillStyle = 'orange';
 };
 
-const defaultRadiusGenerator = (pt, i) => 2 + Math.abs(pt.s * 15);
+const defaultRadiusGenerator = (pt) => 2 + Math.abs(pt.s * 15);
 
 export default function drawPoints(
   canvas,

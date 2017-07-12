@@ -17,4 +17,4 @@ const ui = new EllipUi(app);
 document.body.appendChild(uiRoot);
 ui.mount(uiRoot);
 
-addGithubBadge('https://github.com/akx/ellip/')
+addGithubBadge('https://github.com/akx/ellip/');

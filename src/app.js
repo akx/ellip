@@ -90,7 +90,7 @@ export default class EllipApp {
       ctx.fillStyle = gradient[colorIdx];
     }
 
-    function radiusGenerator(pt, i) {
+    function radiusGenerator(pt) {
       return Math.min(options.maxRadius, 2 + Math.abs(pt.s * options.radiusMul));
     }
 

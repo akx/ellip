@@ -1,4 +1,4 @@
-/* eslint-disable no-alert */
+/* eslint-disable no-alert, no-param-reassign */
 import m from 'mithril';
 
 const HELP = `
