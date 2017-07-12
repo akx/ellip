@@ -6,14 +6,14 @@ import CurveGenerator from './generator';
 
 function translateCoords(event) {
   return {
-    x: event.x / (event.target.width / 2) - 1,
-    y: event.y / (event.target.height / 2) - 1,
+    x: event.offsetX / (event.target.width / 2) - 1,
+    y: event.offsetY / (event.target.height / 2) - 1,
   };
 }
 
 export default class EllipApp {
   constructor(width = 800, height = 800) {
-    this.canvas = Object.assign(document.createElement('canvas'), {width, height});
+    this.canvas = Object.assign(document.createElement('canvas'), {width, height, className: 'ellip-canvas'});
     this.ctx = this.canvas.getContext('2d');
     this.drawCanvas = Object.assign(document.createElement('canvas'), {width, height});
     this.drawCtx = this.drawCanvas.getContext('2d');
