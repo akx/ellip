@@ -1,5 +1,6 @@
 /* eslint-disable no-alert, no-param-reassign */
-import m from 'mithril';
+import m from 'mithril/hyperscript';
+import mount from 'mithril/mount';
 
 const HELP = `
 You can use the mouse to drag attractors around.
@@ -94,6 +95,6 @@ export default class EllipUi {
   }
 
   mount(el) {
-    m.mount(el, this);// {view: this.view.bind(this)});
+    mount(el, this);
   }
 }
