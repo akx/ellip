@@ -13,10 +13,11 @@ function translateCoords(event) {
 
 export default class EllipApp {
   constructor(width = 800, height = 800) {
-    this.canvas = Object.assign(document.createElement('canvas'), {width, height, className: 'ellip-canvas'});
+    this.canvas = Object.assign(document.createElement('canvas'), {className: 'ellip-canvas'});
     this.ctx = this.canvas.getContext('2d');
-    this.drawCanvas = Object.assign(document.createElement('canvas'), {width, height});
+    this.drawCanvas = document.createElement('canvas');
     this.drawCtx = this.drawCanvas.getContext('2d');
+    this.setSize(width, height);
 
     this.currentAttractor = null;
     this.clearNext = true;
@@ -29,8 +30,8 @@ export default class EllipApp {
       mirrorX: false,
       mirrorY: false,
       drawAttractors: true,
-      radiusMul: 5,
-      maxRadius: 10,
+      radiusMul: 5 / 800,
+      maxRadius: 10 / 800,
     };
   }
 
@@ -82,7 +83,7 @@ export default class EllipApp {
       this.clearNext = false;
     }
 
-    const {gradient, options} = this;
+    const {gradient, options, drawCanvas} = this;
 
     function gradientStyler(ctx, pt) {
       const colorIdx = Math.floor((pt.y + 1) / 2 * gradient.length);
@@ -91,7 +92,10 @@ export default class EllipApp {
     }
 
     function radiusGenerator(pt) {
-      return Math.min(options.maxRadius, 2 + Math.abs(pt.s * options.radiusMul));
+      return Math.min(
+        options.maxRadius * drawCanvas.width,
+        2 + Math.abs(pt.s * options.radiusMul * drawCanvas.width)
+      );
     }
 
     drawPoints(
@@ -128,6 +132,7 @@ export default class EllipApp {
       0, 0, canvas.width, canvas.height,
       0, 0, this.drawCanvas.width, this.drawCanvas.height
     );
+    ctx.filter = '';
 
     if (this.options.drawAttractors) {
       this.drawAttractors();

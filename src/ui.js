@@ -82,6 +82,14 @@ export default class EllipUi {
       }, 'random gradient'),
       el('button', {
         onclick() {
+          const newSize = parseInt(prompt('Enter new size (px)', app.drawCanvas.width), 10);
+          if (!isNaN(newSize) && newSize > 1) {
+            app.setSize(newSize, newSize);
+          }
+        },
+      }, 'set size...'),
+      el('button', {
+        onclick() {
           const stateJSON = JSON.stringify(app.generator.toState());
           const newStateJSON = prompt('Copy/paste state here', stateJSON);
           if (newStateJSON && newStateJSON !== stateJSON) {
@@ -98,9 +106,9 @@ export default class EllipUi {
     ];
   }
 
-  mount(el) {
+  mount(root) {
     this.elements.forEach((kid) => {
-      el.appendChild(kid);
+      root.appendChild(kid);
     });
   }
 }
